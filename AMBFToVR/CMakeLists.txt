@@ -19,7 +19,7 @@ set(target_libraries
   )
 
 set(HEADER_DIR
-  # include
+  include
   ${OpenVRSDK_SOURCE_DIR}/headers
 )
 
@@ -28,7 +28,7 @@ set(project_name
 )
 
 set(SRC_FILES
-  src/${project_name}.cpp
+  src/${project_name}.cpp src/stb_image.cpp
 )
 
 set(project_app ${project_name}_app)
