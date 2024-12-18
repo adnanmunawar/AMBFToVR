@@ -77,6 +77,11 @@ bool InitOpenVR() {
         return false;
     }
 
+    unsigned int rWidth, rHeight;
+    vrSystem->GetRecommendedRenderTargetSize(&rWidth, &rHeight);
+
+    std::cout << "INFO! Recommended Target Texture Size: " << rWidth << " x " <<  rHeight << std::endl;
+
     return true;
 }
 
@@ -141,6 +146,28 @@ void RenderLoop() {
         //    static int framecnt = 0;
         //    std::cerr << "INFO! Frame Count: " << framecnt++ << std::endl;
         vr::VRCompositor()->WaitGetPoses(m_rTrackedDevicePose, vr::k_unMaxTrackedDeviceCount, NULL, 0 );
+        int idx = 0;
+        std::cout << " %%%%% \n ";
+        for(auto p : m_rTrackedDevicePose){
+            if (p.bPoseIsValid){
+                std::cout << "Device Index: " << idx << " | Class: " << vrSystem->GetTrackedDeviceClass(idx) << std::endl;
+                std::cout << "Rotation: \n[ ";
+                for (int i = 0 ; i < 3 ; i++){
+                    for (int j = 0 ; j < 3 ; j++){
+                        std::cout << p.mDeviceToAbsoluteTracking.m[i][j] << " ";
+                    }
+                    if (i == 2) std::cout << "]";
+                    std::cout << std::endl;
+                }
+                std::cout << "\n";
+                std::cout << "Position: ["
+                          << p.mDeviceToAbsoluteTracking.m[0][3] << ", "
+                          << p.mDeviceToAbsoluteTracking.m[1][3] << ", "
+                          << p.mDeviceToAbsoluteTracking.m[2][3] << "]" << std::endl;
+                std::cout << " ---- \n";
+                idx++;
+            }
+        }
     }
 
     // Clean up OpenGL texture
